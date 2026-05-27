@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile       UserProfile?
+  events        Event[]
+  tasks         Task[]
+  transactions  Transaction[]
+  gamification  Gamification?
+}
+
+model UserProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  objective     String?
+  city          String?
+  state         String?
+  country       String?
+  monthlyIncome Float?
+  hobbies       String?
+  workStartTime String?
+  workEndTime   String?
+  onboardingCompleted Boolean @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  color       String   @default("#6366f1")
+  category    String   @default("personal")
+  recurring   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  priority    String    @default("medium")
+  dueDate     DateTime?
+  category    String    @default("personal")
+  recurring   String?
+  completedAt DateTime?
+  xpEarned    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  amount      Float
+  description String
+  category    String
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Gamification {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalXp         Int      @default(0)
+  level           Int      @default(1)
+  currentStreak   Int      @default(0)
+  longestStreak   Int      @default(0)
+  lastActivityDate DateTime?
+  badges          String   @default("[]")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

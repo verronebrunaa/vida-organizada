@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vida Organizada ✨
 
-## Getting Started
+Um planner pessoal completo para organizar sua vida em um só lugar — agenda, tarefas, finanças e clima.
 
-First, run the development server:
+## Funcionalidades
+
+- **Agenda/Calendário** — Visualização mensal com eventos, trabalho e hobbies
+- **Tarefas** — To-do list com prioridades, categorias e recorrência
+- **Financeiro** — Controle de gastos e receitas com visualizações por categoria
+- **Clima** — Previsão do tempo semanal baseada na sua localização
+- **Gamificação** — Sistema de XP, streaks e badges por completar tarefas
+- **Onboarding** — Formulário inicial para personalizar a experiência
+- **Dashboard** — Visão geral integrada de tudo
+
+## Tech Stack
+
+- **Next.js 16** (App Router) + TypeScript
+- **Tailwind CSS** para estilização
+- **Prisma** + SQLite para banco de dados
+- **Lucide React** para ícones
+- **bcryptjs** + **jose** (JWT) para autenticação
+
+## Setup
 
 ```bash
+# Instalar dependências
+npm install
+
+# Gerar o Prisma Client
+npx prisma generate
+
+# Rodar as migrations
+npx prisma migrate dev
+
+# Iniciar o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O app estará disponível em [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variáveis de Ambiente (opcional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Crie um arquivo `.env` na raiz do projeto:
 
-## Learn More
+```env
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="sua-chave-secreta-aqui"
+OPENWEATHER_API_KEY="sua-chave-da-openweathermap"
+```
 
-To learn more about Next.js, take a look at the following resources:
+> Sem a chave da OpenWeatherMap, o app usará dados simulados de clima.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estrutura do Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── (auth)/          # Páginas de login e registro
+│   ├── (app)/           # Páginas protegidas (dashboard, calendar, tasks, finances)
+│   ├── api/             # Route handlers (auth, weather, onboarding)
+│   └── actions/         # Server actions (tasks, events, finances)
+├── components/          # Componentes React
+│   ├── ui/              # Componentes base (Button, Input, Card, Modal, etc.)
+│   ├── dashboard/       # Componentes do dashboard
+│   ├── calendar/        # Componentes do calendário
+│   ├── tasks/           # Componentes de tarefas
+│   └── finances/        # Componentes financeiros
+└── lib/                 # Utilitários (auth, prisma, utils)
+```
